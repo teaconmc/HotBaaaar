@@ -9,6 +9,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.LogicalSide;
+import net.neoforged.fml.loading.FMLConfig;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -42,7 +46,11 @@ public class InventoryMixin {
      */
     @Overwrite
     public static int getSelectionSize() {
-        return 36;
+        if (FMLEnvironment.getDist() == Dist.CLIENT) {
+            return 9 * HotBaaaarHelper.getHotBaaaarAmount(null);
+        } else {
+            return 36;
+        }
     }
 
     /**
