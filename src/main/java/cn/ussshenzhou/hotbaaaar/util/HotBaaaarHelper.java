@@ -15,9 +15,14 @@ import java.util.function.Supplier;
 public class HotBaaaarHelper {
 
     private static final Supplier<Integer> CLIENT = new Supplier<Integer>() {
+        @SuppressWarnings("ConstantValue")
         @Override
         public Integer get() {
-            return Mth.clamp(Minecraft.getInstance().getWindow().getGuiScaledWidth() / Util.HOTBAR_UNIT_LENGTH, 1, 4);
+            var window = Minecraft.getInstance().getWindow();
+            if (window == null) {
+                return 36;
+            }
+            return Mth.clamp(window.getGuiScaledWidth() / Util.HOTBAR_UNIT_LENGTH,1, 4);
         }
     };
 
