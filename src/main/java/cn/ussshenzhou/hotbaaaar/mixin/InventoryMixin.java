@@ -35,6 +35,9 @@ public class InventoryMixin {
     @Final
     public NonNullList<ItemStack> items;
 
+    @Unique
+    private static final StackWalker WALKER = StackWalker.getInstance();
+
     @ModifyConstant(method = "isHotbarSlot", constant = @Constant(intValue = 9))
     private static int hotBaaaarAllSelectable(int constant) {
         return 36;
@@ -46,6 +49,9 @@ public class InventoryMixin {
      */
     @Overwrite
     public static int getSelectionSize() {
+        if (WALKER.walk(s -> s.anyMatch(f -> f.getClassName().startsWith("mekanism")))) {
+            return 9;
+        }
         if (FMLEnvironment.getDist() == Dist.CLIENT) {
             return 9 * HotBaaaarHelper.getHotBaaaarAmount(null);
         } else {
